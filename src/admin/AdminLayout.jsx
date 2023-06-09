@@ -12,9 +12,9 @@ function AdminLayout() {
 
             <ul class="nav nav-pills flex-column mb-auto">
               <li>
-                <a href="#" class="nav-link link-dark active">
+                <Link to="/admin" class="nav-link link-dark">
                   Dashboard
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" class="nav-link link-dark">
@@ -22,14 +22,19 @@ function AdminLayout() {
                 </a>
               </li>
               <li>
-                <a href="#" class="nav-link link-dark">
+                <Link to="/admin/products" class="nav-link link-dark">
                   Products
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" class="nav-link link-dark">
-                  Customers
-                </a>
+                <Link to="/admin/users" class="nav-link link-dark">
+                  Users
+                </Link>
+              </li>
+              <li>
+                <Link to="/" class="nav-link link-dark">
+                  Home
+                </Link>
               </li>
               <li>
                 <a href="#" class="nav-link link-dark">

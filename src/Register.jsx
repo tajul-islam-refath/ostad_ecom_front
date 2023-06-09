@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import axiosInstance from "./axiosInterceptors";
+
+import { userRegister } from "./api/API";
+
 const Register = () => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
@@ -20,20 +22,14 @@ const Register = () => {
     } else if (password != confirmPassword) {
       toast.warn("Password does not match");
     } else {
-      try {
-        console.log(name);
-        let { data } = await axiosInstance.post("/user/registration", {
+      if (
+        await userRegister({
           name,
           email,
           password,
-        });
-
-        if (data.success) {
-          toast.success("User registation success");
-          return navigate("/login");
-        }
-      } catch (e) {
-        console.log("err", e.message);
+        })
+      ) {
+        return navigate("/login");
       }
     }
   };

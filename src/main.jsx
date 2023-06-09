@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { store } from "./redux/store";
+import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import App from "./App.jsx";
@@ -9,10 +11,13 @@ import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import Protected from "./Protected.jsx";
 import Login from "./Login.jsx";
-import ProductList from "./pages/ProductList.jsx";
+import AdminProductList from "./admin/AdminProductList";
 import Home from "./pages/Home.jsx";
+import ProductList from "./pages/ProductList.jsx";
 import AdminLayout from "./admin/AdminLayout.jsx";
 import Dashboard from "./admin/Dashboard.jsx";
+import ProductCreateUpdate from "./admin/ProductCreateUpdate";
+import AdminUserList from "./admin/AdminUserList";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,11 +35,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: (
+      <Protected>
+        <AdminLayout />
+      </Protected>
+    ),
     children: [
       {
         path: "/admin",
         element: <Dashboard />,
+      },
+      {
+        path: "/admin/products",
+        element: <AdminProductList />,
+      },
+      {
+        path: "/admin/productCreateUpdate",
+        element: <ProductCreateUpdate />,
+      },
+      {
+        path: "/admin/users",
+        element: <AdminUserList />,
       },
     ],
   },
@@ -58,7 +79,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
     <ToastContainer />
   </React.StrictMode>
 );

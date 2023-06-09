@@ -1,9 +1,22 @@
 import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./App.css";
+import { logoutAction } from "./redux/slice";
 
 function App() {
+  const navigation = useNavigate();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.app.isAuthenticated);
+  const user = useSelector((state) => state.app.user);
+
+  const logOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    dispatch(logoutAction());
+    navigation("/");
+  };
   return (
     <>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -33,16 +46,27 @@ function App() {
                   Products
                 </Link>
               </li>
-              <li class="nav-item">
-                <Link class="nav-link" to="/admin">
-                  Admin
-                </Link>
-              </li>
-              <li class="nav-item">
-                <Link class="nav-link" to="/login">
-                  Login
-                </Link>
-              </li>
+
+              {isAuthenticated ? (
+                <>
+                  {user.role == "admin" && (
+                    <li class="nav-item">
+                      <Link class="nav-link" to="/admin">
+                        Admin
+                      </Link>
+                    </li>
+                  )}
+                  <li class="nav-item" onClick={() => logOut()}>
+                    <a class="nav-link">Logout</a>
+                  </li>
+                </>
+              ) : (
+                <li class="nav-item">
+                  <Link class="nav-link" to="/login">
+                    Login
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>

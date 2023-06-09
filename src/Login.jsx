@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosInstance from "./axiosInterceptors";
+import { userLogin } from "./api/API";
 
 function Login() {
   const [email, setEmail] = useState();
@@ -14,23 +15,13 @@ function Login() {
     } else if (!password) {
       toast.warn("Password is required");
     } else {
-      try {
-        let { data } = await axiosInstance.post("/user/login", {
+      if (
+        await userLogin({
           email,
           password,
-        });
-
-        if (data.success) {
-          toast.success("User login success");
-          localStorage.setItem("token", JSON.stringify(data.token));
-          localStorage.setItem("user", JSON.stringify(data.user));
-          return navigate("/profile");
-        } else {
-          toast.error("User login error");
-        }
-      } catch (e) {
-        console.log("err", e.message);
-        toast.error("User login error");
+        })
+      ) {
+        navigate("/");
       }
     }
   };
