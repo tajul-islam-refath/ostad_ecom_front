@@ -11,9 +11,9 @@ const initialState = {
   loader: false,
   orderList: [],
   productList: [],
+  singleProduct: null,
   userList: [],
-
-  singleProduct: [],
+  cart: [],
 };
 
 export const counterSlice = createSlice({
@@ -33,13 +33,41 @@ export const counterSlice = createSlice({
     productListAction: (state, action) => {
       state.productList = action.payload.data;
     },
+    singleProduct: (state, action) => {
+      state.singleProduct = action.payload.data;
+    },
     userListAction: (state, action) => {
       state.userList = action.payload.data;
+    },
+    addToCart: (state, action) => {
+      state.cart.push(action.payload);
+    },
+    removeToCart: (state, action) => {
+      state.cart.splice(action.payload, 1);
+    },
+    updateCart: (state, action) => {
+      state.cart[action.payload.index] = action.payload.data;
+    },
+    clearCart: (state) => {
+      state.cart = [];
+    },
+    getOrderList: (state, action) => {
+      state.orderList = action.payload.data;
     },
   },
 });
 
-export const { login, logoutAction, productListAction, userListAction } =
-  counterSlice.actions;
+export const {
+  login,
+  logoutAction,
+  productListAction,
+  userListAction,
+  addToCart,
+  removeToCart,
+  updateCart,
+  clearCart,
+  getOrderList,
+  singleProduct,
+} = counterSlice.actions;
 
 export default counterSlice.reducer;

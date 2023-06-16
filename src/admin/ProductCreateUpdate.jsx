@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createNewProduct } from "../api/API";
+import { useSelector } from "react-redux";
+import { createNewProduct, getSingleProduct } from "../api/API";
 
 function ProductCreateUpdate() {
   const [title, setTitle] = useState("");
@@ -8,23 +9,51 @@ function ProductCreateUpdate() {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [image, setImage] = useState("");
+  let [ObjectID, SetObjectID] = useState(0);
+
+  let singleProduct = useSelector((state) => state.app.singleProduct);
 
   const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (
-      await createNewProduct({
-        title,
-        description,
-        price,
-        quantity,
-        image,
-      })
+      await createNewProduct(
+        {
+          title,
+          description,
+          price,
+          quantity,
+          image,
+        },
+        ObjectID
+      )
     ) {
       navigate("/admin/products");
     }
   };
+
+  useEffect(() => {
+    let params = new URLSearchParams(window.location.search);
+    let id = params.get("id");
+    if (id !== null) {
+      SetObjectID(id);
+      (async () => {
+        let res = await getSingleProduct(id);
+      })();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (singleProduct !== null) {
+      setTitle(singleProduct.title);
+      setDescription(singleProduct.description);
+      setPrice(singleProduct.price);
+      setQuantity(singleProduct.quantity);
+      setImage(singleProduct.image);
+    }
+  }, [singleProduct]);
+
   return (
     <div className="container mt-2">
       <h2>Create New Product</h2>

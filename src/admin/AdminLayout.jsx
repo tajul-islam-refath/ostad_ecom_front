@@ -17,9 +17,9 @@ function AdminLayout() {
                 </Link>
               </li>
               <li>
-                <a href="#" class="nav-link link-dark">
+                <Link to="/admin/orders" class="nav-link link-dark">
                   Orders
-                </a>
+                </Link>
               </li>
               <li>
                 <Link to="/admin/products" class="nav-link link-dark">

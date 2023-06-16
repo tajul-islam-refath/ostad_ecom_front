@@ -18,6 +18,11 @@ import AdminLayout from "./admin/AdminLayout.jsx";
 import Dashboard from "./admin/Dashboard.jsx";
 import ProductCreateUpdate from "./admin/ProductCreateUpdate";
 import AdminUserList from "./admin/AdminUserList";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import OrderList from "./pages/OrderList";
+import AdminOrderList from "./admin/AdminOrderList";
+import SingleProduct from "./pages/SingleProduct";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,6 +35,34 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <ProductList />,
+      },
+      {
+        path: "/products/:id",
+        element: <SingleProduct />,
+      },
+      {
+        path: "/orders",
+        element: (
+          <Protected>
+            <OrderList />
+          </Protected>
+        ),
+      },
+      {
+        path: "/cart",
+        element: (
+          <Protected>
+            <Cart />
+          </Protected>
+        ),
+      },
+      {
+        path: "/checkout",
+        element: (
+          <Protected>
+            <Checkout />
+          </Protected>
+        ),
       },
     ],
   },
@@ -56,6 +89,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/users",
         element: <AdminUserList />,
+      },
+      {
+        path: "/admin/orders",
+        element: <AdminOrderList />,
       },
     ],
   },

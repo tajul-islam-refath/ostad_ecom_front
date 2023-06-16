@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
-import "./App.css";
 import { logoutAction } from "./redux/slice";
+import "./App.css";
 
 function App() {
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.app.isAuthenticated);
   const user = useSelector((state) => state.app.user);
+  const cart = useSelector((state) => state.app.cart);
 
   const logOut = () => {
     localStorage.removeItem("token");
@@ -46,9 +46,24 @@ function App() {
                   Products
                 </Link>
               </li>
+              <li class="nav-item">
+                <Link class="nav-link" to="/cart">
+                  Cart
+                  <span
+                    class="badge badge-warning"
+                    style={{ backgroundColor: "red" }}>
+                    {cart.length}
+                  </span>
+                </Link>
+              </li>
 
               {isAuthenticated ? (
                 <>
+                  <li class="nav-item">
+                    <Link class="nav-link" to="/orders">
+                      Orders
+                    </Link>
+                  </li>
                   {user.role == "admin" && (
                     <li class="nav-item">
                       <Link class="nav-link" to="/admin">
